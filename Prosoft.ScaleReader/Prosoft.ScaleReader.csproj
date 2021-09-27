@@ -2,6 +2,10 @@
 
   <PropertyGroup>
     <TargetFrameworks>net5.0;net461</TargetFrameworks>
+    <Company>Prosoft</Company>
+    <Authors>Prosoft</Authors>
+    <PackageProjectUrl></PackageProjectUrl>
+    <RepositoryUrl>https://github.com/prosoftgmbh/Prosoft.ScaleReader</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
