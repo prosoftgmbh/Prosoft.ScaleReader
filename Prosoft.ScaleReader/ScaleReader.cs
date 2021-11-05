@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO.Ports;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Prosoft.ScaleReader
@@ -85,11 +86,24 @@ namespace Prosoft.ScaleReader
 
                     content = Port.ReadLine();
 
-                    //System.Diagnostics.Debug.WriteLine(content);
-                    // Ich weiß nicht wieso aber der Compiler wollte unbedingt, dass ich hier ein Array angebe.
                     var contents = content.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                    for (int i = 0; i < contents.Length; i++) System.Diagnostics.Debug.WriteLine(contents[i]);
-                    if (decimal.TryParse(contents[0], out decimal weight)) Value = weight;
+
+                    bool isNegative = false;
+
+                    if (contents.Any(i => i == "-")) isNegative = true;
+
+                    for (int i = 0; i < contents.Length; i++)
+                    {
+                        System.Diagnostics.Debug.WriteLine(contents[i]);
+
+                        contents[i] = contents[i].Replace(".", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+
+                        if (decimal.TryParse(contents[i], out decimal weight))
+                        {
+                            if (isNegative) Value = -weight;
+                            else Value = weight;
+                        }
+                    }
                 }
             }).ContinueWith((r) =>
             {
